@@ -19,7 +19,7 @@ def compute_cost(Y, cache, L, loss="cross-entropy", debug_mode=False):
         print("\tStack trace: output_layer_propagation.get_cost()")
     return None
 
-def compute_dAL(Y, cache, L debug_mode=False):
+def compute_dAL(Y, cache, L, debug_mode=False):
     AL = cache["A"][L + 1]
     # check the dimensions of Y & AL
     if Y.shape != AL.shape:
