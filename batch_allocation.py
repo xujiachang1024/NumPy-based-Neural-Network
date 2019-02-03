@@ -15,4 +15,4 @@ def allocate_batches(X, Y, batch_size, debug_mode=False):
     num_batches = m // batch_size + (m % batch_size > 0)
     X_batches = np.array_split(X, num_batches, axis=1)
     Y_batches = np.array_split(Y, num_batches, axis=1)
-    return (X_batches, Y_batches)
+    return (num_batches, X_batches, Y_batches)
