@@ -22,8 +22,21 @@ def one_layer_forward(parameters, cache, l, activation="sigmoid", debug_mode=Fal
     # activate nonlinear forward: sigmoid
     if activation.lower() == "sigmoid":
         cache["A"][l] = af.sigmoid_forward(Z=Z, debug_mode=debug_mode)
-        return (parameters, cache)
-    return None
+    # activate nonlinear forward: tanh
+    elif activation.lower() == "tanh":
+        cache["A"][l] = af.tanh_forward(Z=Z, debug_mode=debug_mode)
+    # activate nonlinear forward: relu
+    elif activation.lower() == "relu":
+        cache["A"][l] = af.relu_forward(Z=Z, debug_mode=debug_mode)
+    # activate nonlinear forward: leaky relu
+    elif activation.lower() == "leaky relu":
+        cache["A"][l] = af.leaky_relu_forward(Z=Z, debug_mode=debug_mode)
+    else:
+        if debug_mode:
+            print("Error: unsupported activation function")
+            print("\tStack trace: hidden_layer_propagation.nonlinear_forward()")
+        return None
+    return (parameters, cache)
 
 def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=False):
     W = parameters["W"[l]
@@ -32,8 +45,14 @@ def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=Fal
     A_prev = cache["A"][l - 1]
     dA = cache["dA"][l]
     # get the gradient of Z
-    if activation.lower()="sigmoid":
+    if activation.lower() == "sigmoid":
         cache["dZ"][l] = np.multiply(dA, af.sigmoid_backward(Z=Z, A=A, debug_mode=debug_mode))
+    elif activation.lower() == "tanh":
+        cache["dZ"][l] = np.multiply(dA, af.tanh_backward(Z=Z, A=A, debug_mode=debug_mode))
+    elif activation.lower() == "relu":
+        cache["dZ"][l] = np.multiply(dA, af.relu_backward(Z=Z, A=A, debug_mode=debug_mode))
+    elif activation.lower() == "leaky tanh":
+        cache["dZ"][l] = np.multiply(dA, af.leaky_relu_backward(Z=Z, A=A, debug_mode=debug_mode))
     else:
         if debug_mode:
             print("Error: unsupported activation function")
