@@ -21,18 +21,19 @@ def one_layer_forward(parameters, cache, l, activation="sigmoid", debug_mode=Fal
     cache["Z"][l] = np.dot(W, A_prev) + b
     # activate nonlinear forward: sigmoid
     if activation.lower() == "sigmoid":
-        cache["A"][l] = af.sigmoid_forward(Z, debug_mode=debug_mode)
+        cache["A"][l] = af.sigmoid_forward(Z=Z, debug_mode=debug_mode)
         return (parameters, cache)
     return None
 
 def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=False):
     W = parameters["W"[l]
     Z = cache["Z"][l]
+    A = cache["A"][l]
     A_prev = cache["A"][l - 1]
     dA = cache["dA"][l]
     # get the gradient of Z
     if activation.lower()="sigmoid":
-        cache["dZ"][l] = np.multiply(dA, af.sigmoid_backward(Z))
+        cache["dZ"][l] = np.multiply(dA, af.sigmoid_backward(Z=Z, A=A, debug_mode=debug_mode))
     else:
         if debug_mode:
             print("Error: unsupported activation function")
