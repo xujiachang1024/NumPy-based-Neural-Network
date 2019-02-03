@@ -1,7 +1,8 @@
 import numpy as np
 import activation_functions as af
 
-def one_layer_forward(parameters, cache, l, activation="sigmoid", debug_mode=False):
+def one_layer_forward(hyperparameters, parameters, cache, l, debug_mode=False):
+    activation = hyperparameters["activations"][l]
     W = parameters["W"][l]
     b = parameters["b"][l]
     A_prev = cache["A"][l - 1]
@@ -38,7 +39,8 @@ def one_layer_forward(parameters, cache, l, activation="sigmoid", debug_mode=Fal
         return None
     return (parameters, cache)
 
-def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=False):
+def compute_gradients(hyperparameters, parameters, cache, l, debug_mode=False):
+    activation = hyperparameters["activations"][l]
     W = parameters["W"[l]
     Z = cache["Z"][l]
     A = cache["A"][l]
@@ -68,7 +70,7 @@ def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=Fal
     cache["dA"][l - 1] = np.dot(W.T, dZ)
     return (parameters, cache)
 
-def update_parameters(parameters, cache, l, learning_rate=0.001, debug_mode=False):
+def update_parameters(hyperparameters, parameters, cache, l, learning_rate=0.001, debug_mode=False):
     dW = cache["dW"][l]
     db = cache["db"][l]
     if parameters["W"][l].shape != dW.shape:
@@ -85,7 +87,7 @@ def update_parameters(parameters, cache, l, learning_rate=0.001, debug_mode=Fals
     parameters["b"][l] -= learning_rate * db
     return (parameters, cache)
 
-def one_layer_backward(parameters, cache, l, activation="sigmoid", learning_rate=0.001, debug_mode=False):
-    parameters, cache = compute_gradients(parameters=parameters, cache=cache, l=l, activation=activation, debug_mode=debug_mode)
-    parameters, cache = update_parameters(parameters=parameters, cache=cache, l=l, learning_rate=learning_rate, debug_mode=debug_mode)
+def one_layer_backward(hyperparameters, parameters, cache, l, learning_rate=0.001, debug_mode=False):
+    parameters, cache = compute_gradients(hyperparameters=hyperparameters, parameters=parameters, cache=cache, l=l, debug_mode=debug_mode)
+    parameters, cache = update_parameters(hyperparameters=hyperparameters, parameters=parameters, cache=cache, l=l, learning_rate=learning_rate, debug_mode=debug_mode)
     return (parameters, cache)
