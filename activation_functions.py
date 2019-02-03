@@ -29,16 +29,31 @@ def sigmoid_backward(Z, A, debug_mode=False):
     sigmoid_backward = np.multiply(A, (1.0 - A))
     return sigmoid_backward
 
+"""
+The tanh value in forward propagation
+
+@param Z: the NumPy array of original values, shape = (n_h, m)
+@param debug_mode: (optional) a boolean value that indicates whether the debug mode is active; the default value is false
+@return a NumPy array of tanh values in forward propagation
+"""
 def tanh_forward(Z, debug_mode=False):
     if debug_mode:
         print("Message: Z.shape = " + str(Z.shape))
         print("\tStack trace: activation_functions.tanh_forward()")
-    tanh_forward = None
+    tanh_forward = (np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
     return tanh_forward
 
-def tanh_backward(Z, debug_mode=False):
+"""
+The tanh value in backward propagation
+
+@param Z: the NumPy array of the original values, shape = (n_h, m)
+@param A: the NumPy array of the activated values, shape = (n_h, m)
+@param debug_mode: (optional) a boolean value that indicates whether the debug mode is active; the default value is false
+@return a NumPy array of tanh values in backward propagation
+"""
+def tanh_backward(Z, A, debug_mode=False):
     if debug_mode:
         print("Message: Z.shape = " + str(Z.shape))
         print("\tStack trace: activation_functions.tanh_backward()")
-    tanh_backward = None
+    tanh_backward = 1 - np.square(A)
     return tanh_backward
