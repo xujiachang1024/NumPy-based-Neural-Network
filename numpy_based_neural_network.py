@@ -115,3 +115,19 @@ class NumPyBasedNeuralNetwork(object):
             plt.ylabel("Cross-entropy cost")
             plt.show()
         return True
+
+    def predict(self, X, debug_mode=False):
+        # check the number of features
+        if X.shape[0] != self.__parameters["W"][1].shape[1]:
+            if debug_mode:
+                print("Error: inconsistent number of features")
+                print("\tStack trace: NumPyBasedNeuralNetwork.fit()")
+            return None
+        predicted_cache = e2ep.initialize(debug_mode=debug_mode)
+        self.__parameters, predicted_cache = e2ep.end_to_end_forward(X=X, parameters=self.__parameters, cache=predicted_cache, activation="sigmoid", debug_mode=debug_mode)
+        AL = predicted_cache["A"][self.__L + 1]
+        predicted_classes = np.argmax(AL, axis=0)
+        predicted_onehots = np.zeros(AL.shape)
+        for col in range(A.shape[1]):
+            predicted_onehots[predicted_classes[col], col] = 1
+        return (predicted_classes, predicted_onehots)
