@@ -1,9 +1,9 @@
 import numpy as np
 import activation_functions as af
 
-def one_layer_forward(Ws, bs, cache, l, activation="sigmoid", debug_mode=False):
-    W = Ws["W"][l]
-    b = bs["b"][l]
+def one_layer_forward(parameters, cache, l, activation="sigmoid", debug_mode=False):
+    W = parameters["W"][l]
+    b = parameters["b"][l]
     A_prev = cache["A"][l - 1]
     # check the number of neurons at the (l-1)-th layer
     if W.shape[1] != A_prev.shape[0]:
@@ -22,11 +22,11 @@ def one_layer_forward(Ws, bs, cache, l, activation="sigmoid", debug_mode=False):
     # activate nonlinear forward: sigmoid
     if activation.lower() == "sigmoid":
         cache["A"][l] = af.sigmoid_forward(Z, debug_mode=debug_mode)
-        return (Ws, bs, cache)
+        return (parameters, cache)
     return None
 
-def compute_gradients(Ws, bs, cache, l, activation="sigmoid", debug_mode=False):
-    W = Ws["W"[l]
+def compute_gradients(parameters, cache, l, activation="sigmoid", debug_mode=False):
+    W = parameters["W"[l]
     Z = cache["Z"][l]
     A_prev = cache["A"][l - 1]
     dA = cache["dA"][l]
@@ -46,26 +46,26 @@ def compute_gradients(Ws, bs, cache, l, activation="sigmoid", debug_mode=False):
     cache["db"][l] = (1.0 / m) * np.sum(dZ, axis=1, keepdims=True)
     # get the gradient of A_prev
     cache["dA"][l - 1] = np.dot(W.T, dZ)
-    return (Ws, bs, cache)
+    return (parameters, cache)
 
-def update_parameters(Ws, bs, cache, l, learning_rate=0.001, debug_mode=False):
+def update_parameters(parameters, cache, l, learning_rate=0.001, debug_mode=False):
     dW = cache["dW"][l]
     db = cache["db"][l]
-    if Ws["W"][l].shape != dW.shape:
+    if parameters["W"][l].shape != dW.shape:
         if debug_mode:
             print("Error: inconsistent dimensions of W" + str(l) + " & dW"+ str(l))
             print("\tStack trace: hidden_layer_propagation.update_parameters()")
         return None
-    if bs["b"][l].shape != db.shape:
+    if parameters["b"][l].shape != db.shape:
         if debug_mode:
             print("Error: inconsistent dimensions of b" + str(l) + " & db"+ str(l))
             print("\tStack trace: hidden_layer_propagation.update_parameters()")
         return None
-    Ws["W"][l] -= learning_rate * dW
-    bs["b"][l] -= learning_rate * db
-    return (Ws, bs, cache)
+    parameters["W"][l] -= learning_rate * dW
+    parameters["b"][l] -= learning_rate * db
+    return (parameters, cache)
 
-def one_layer_backward(Ws, bs, cache, l, activation="sigmoid", learning_rate=0.001, debug_mode=False):
-    Ws, bs, cache = compute_gradients(Ws=Ws, bs=bs, cache=cache, l=l, activation=activation, debug_mode=debug_mode)
-    Ws, bs, cache = update_parameters(Ws=Ws, bs=bs, cache=cache, l=l, learning_rate=learning_rate, debug_mode=debug_mode)
-    return (Ws, bs, cache)
+def one_layer_backward(parameters, cache, l, activation="sigmoid", learning_rate=0.001, debug_mode=False):
+    parameters, cache = compute_gradients(parameters=parameters, cache=cache, l=l, activation=activation, debug_mode=debug_mode)
+    parameters, cache = update_parameters(parameters=parameters, cache=cache, l=l, learning_rate=learning_rate, debug_mode=debug_mode)
+    return (parameters, cache)
