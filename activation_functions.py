@@ -17,13 +17,14 @@ def sigmoid_forward(Z, debug_mode=False):
 """
 The sigmoid value in backward propagation
 
+@param Z: the NumPy array of the original values, shape = (n_h, m)
 @param A: the NumPy array of the activated values, shape = (n_h, m)
 @param debug_mode: (optional) a boolean value that indicates whether the debug mode is active; the default value is false
 @return a NumPy array of sigmoid values in backward propagation
 """
-def sigmoid_backward(A, debug_mode=False):
+def sigmoid_backward(Z, A, debug_mode=False):
     if debug_mode:
-        print("Message: A.shape = " + str(A.shape))
+        print("Message: Z.shape = " + str(Z.shape))
         print("\tStack trace: activation_functions.sigmoid_backward()")
     sigmoid_backward = np.multiply(A, (1.0 - A))
     return sigmoid_backward
