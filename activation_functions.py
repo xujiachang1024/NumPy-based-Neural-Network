@@ -23,7 +23,7 @@ The sigmoid value in backward propagation
 """
 def sigmoid_backward(Z, debug_mode=False):
     if debug_mode:
-        print("Message: A.shape = " + str(Z.shape))
+        print("Message: Z.shape = " + str(Z.shape))
         print("\tStack trace: activation_functions.sigmoid_backward()")
-    sigmoid_backward = np.multiply(Z, (1 - Z))
+    sigmoid_backward = np.multiply(Z, (1.0 - Z))
     return sigmoid_backward
