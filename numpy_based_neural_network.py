@@ -1,5 +1,5 @@
 import numpy as np
-import activate_functions as af
+import activation_functions as af
 import batch_allocation as ba
 import end_to_end_propagation as e2ep
 import hidden_layer_propagation as hlp
@@ -38,8 +38,8 @@ class NumPyBasedNeuralNetwork(object):
                 for l in range(1, self.__hyperparameters["L"] + 2):
                     n_h_curr = self.__hyperparameters["dimensions"][l]
                     n_h_prev = self.__hyperparameters["dimensions"][l - 1]
-                    self.__parameters["W"][l] = np.random.randn((n_h_curr, n_h_prev))
-                    self.__parameters["b"][l] = np.random.randn((n_h_curr, 1))
+                    self.__parameters["W"][l] = np.random.randn(n_h_curr, n_h_prev)
+                    self.__parameters["b"][l] = np.random.randn(n_h_curr, 1)
             else:
                 if debug_mode:
                     print("Error: inconsistent number of hidden layers")
@@ -52,6 +52,25 @@ class NumPyBasedNeuralNetwork(object):
         self.__costs = dict()
         self.__costs["epoch"] = []
         self.__costs["iteration"] = []
+        # print dimensions
+        if debug_mode:
+            self.__print_dimensions(hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=None)
+
+    def __print_dimensions(self, hyperparameters, parameters=None, cache=None):
+        if parameters != None:
+            print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("W") + "|" + "{:10s}".format("b") + "|" + "{:10s}".format("activation") + "|")
+            for l in range(1, hyperparameters["L"] + 2):
+                print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(parameters["W"][l].shape)) + "|" + "{:10s}".format(str(parameters["b"][l].shape)) + "|" +
+                                                            "{:10s}".format(str(hyperparameters["activations"][l])) + "|")
+        if cache != None:
+            print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("Z") + "|" + "{:10s}".format("A") + "|" +
+                                                         "{:10s}".format("dA") + "|" + "{:10s}".format("dZ") + "|" +
+                                                         "{:10s}".format("dW") + "|" + "{:10s}".format("db") + "|")
+            for l in range(1, hyperparameters["L"] + 2):
+                print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format(str(cache["Z"][l].shape)) + "|" + "{:10s}".format(str(cache["A"][l].shape)) + "|" +
+                                                             "{:10s}".format(str(cache["dA"][l].shape)) + "|" + "{:10s}".format(str(cache["dZ"][l].shape)) + "|" +
+                                                             "{:10s}".format(str(cache["dW"][l].shape)) + "|" + "{:10s}".format(str(cache["db"][l].shape)) + "|")
+
 
     def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.001, batch_size=1, debug_mode=False, cost_plot_mode=True):
         # reset model parameters
