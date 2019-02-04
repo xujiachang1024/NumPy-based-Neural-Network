@@ -41,7 +41,7 @@ def one_layer_forward(hyperparameters, parameters, cache, l, debug_mode=False):
 
 def compute_gradients(hyperparameters, parameters, cache, l, debug_mode=False):
     activation = hyperparameters["activations"][l]
-    W = parameters["W"[l]
+    W = parameters["W"][l]
     Z = cache["Z"][l]
     A = cache["A"][l]
     A_prev = cache["A"][l - 1]
