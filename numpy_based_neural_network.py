@@ -21,13 +21,13 @@ class NumPyBasedNeuralNetwork(object):
     def set_architecture(self, L=None, dimensions=None, activations=None, debug_mode=False):
         # initialize hyperparameters
         self.__hyperparameters = dict()
-        self.__hyperparameters["L"] = L
-        self.__hyperparameters["dimensions"] = dimensions
-        self.__hyperparameters["activations"] = activations
+        self.__hyperparameters["L"] = L # number of hidden layers
+        self.__hyperparameters["dimensions"] = dimensions # number of neurons at each layer
+        self.__hyperparameters["activations"] = activations # type of activation function at each layer
         # initialize parameters
         self.__parameters = dict()
-        self.__parameters["W"] = dict()
-        self.__parameters["b"] = dict()
+        self.__parameters["W"] = dict() # weights
+        self.__parameters["b"] = dict() # bias terms
         # reset model parameters
         self.__reset_parameters(debug_mode=debug_mode)
 
@@ -104,7 +104,8 @@ class NumPyBasedNeuralNetwork(object):
                 iterative_cost = olp.compute_cost(Y=Y_batch, hyperparameters=self.__hyperparameters, cache=iterative_cache, loss="cross-entropy", debug_mode=debug_mode)
                 self.__costs["iteration"].append(iterative_cost)
                 # batch iteration: end-to-end backward propagation
-                self.__parameters, iterative_cache = e2ep.end_to_end_backward(Y=Y_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, learning_rate=learning_rate, debug_mode=debug_mode)
+                decayed_learning_rate = (1.0 / (1.0 + decay_rate * epoch)) * learning_rate
+                self.__parameters, iterative_cache = e2ep.end_to_end_backward(Y=Y_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, learning_rate=decayed_learning_rate, debug_mode=debug_mode)
         if cost_plot_mode:
             # plot epoch costs
             plt.plot(self.__costs["epoch"])
