@@ -58,11 +58,13 @@ class NumPyBasedNeuralNetwork(object):
 
     def __print_dimensions(self, hyperparameters, parameters=None, cache=None):
         if parameters != None:
+            print("Architecture:")
             print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("W") + "|" + "{:10s}".format("b") + "|" + "{:10s}".format("activation") + "|")
             for l in range(1, hyperparameters["L"] + 2):
                 print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(parameters["W"][l].shape)) + "|" + "{:10s}".format(str(parameters["b"][l].shape)) + "|" +
                                                             "{:10s}".format(str(hyperparameters["activations"][l])) + "|")
         if cache != None:
+            print("Propagation:")
             print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("Z") + "|" + "{:10s}".format("A") + "|" +
                                                          "{:10s}".format("dA") + "|" + "{:10s}".format("dZ") + "|" +
                                                          "{:10s}".format("dW") + "|" + "{:10s}".format("db") + "|")
@@ -125,6 +127,8 @@ class NumPyBasedNeuralNetwork(object):
                 # batch iteration: end-to-end backward propagation
                 decayed_learning_rate = (1.0 / (1.0 + decay_rate * epoch)) * learning_rate
                 self.__parameters, iterative_cache = e2ep.end_to_end_backward(Y=Y_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, learning_rate=decayed_learning_rate, debug_mode=debug_mode)
+                if debug_mode:
+                    self.__print_dimensions(hyperparameters=self.__hyperparameters, parameters=None, cache=iterative_cache)
         if cost_plot_mode:
             # plot epoch costs
             plt.plot(self.__costs["epoch"])
