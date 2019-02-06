@@ -20,6 +20,7 @@ def one_layer_forward(hyperparameters, parameters, cache, l, debug_mode=False):
         return None
     # calculate linear forward
     cache["Z"][l] = np.dot(W, A_prev) + b
+    Z = cache["Z"][l]
     # activate nonlinear forward: sigmoid
     if activation.lower() == "sigmoid":
         cache["A"][l] = af.sigmoid_forward(Z=Z, debug_mode=debug_mode)
