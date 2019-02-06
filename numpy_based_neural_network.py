@@ -129,6 +129,7 @@ class NumPyBasedNeuralNetwork(object):
                 self.__parameters, iterative_cache = e2ep.end_to_end_backward(Y=Y_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, learning_rate=decayed_learning_rate, debug_mode=debug_mode)
                 if debug_mode:
                     self.__print_dimensions(hyperparameters=self.__hyperparameters, parameters=None, cache=iterative_cache)
+                    input("Press enter to continue...")
         if cost_plot_mode:
             # plot epoch costs
             plt.plot(self.__costs["epoch"])
