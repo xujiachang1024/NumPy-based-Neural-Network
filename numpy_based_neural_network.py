@@ -119,7 +119,7 @@ class NumPyBasedNeuralNetwork(object):
                 X_batch = X_batches[batch_index]
                 Y_batch = Y_batches[batch_index]
                 # batch iteration: end-to-end forward propagation
-                iterative_cache = e2ep.initialize(debug_mode=debug_mode)
+                iterative_cache = e2ep.initialize_cache(debug_mode=debug_mode)
                 self.__parameters, iterative_cache = e2ep.end_to_end_forward(X=X_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, debug_mode=debug_mode)
                 # batch iteration: compute and log cost
                 iterative_cost = olp.compute_cost(Y=Y_batch, hyperparameters=self.__hyperparameters, cache=iterative_cache, loss="cross-entropy", debug_mode=debug_mode)

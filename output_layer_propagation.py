@@ -2,11 +2,13 @@ import numpy as np
 
 def compute_cost(Y, hyperparameters, cache, loss="cross-entropy", debug_mode=False):
     L = hyperparameters["L"]
-    AL = cache["A"][L]
+    AL = cache["A"][L + 1]
     # check the dimensions of Y & AL
     if Y.shape != AL.shape:
         if debug_mode:
             print("Error: inconsistent dimensions of actual and predicted outputs")
+            print("\tY.shape: \t" + str(Y.shape))
+            print("\tAL.shape: \t" + str(AL.shape))
             print("\tStack trace: output_layer_propagation.get_cost()")
         return None
     # get the number of examples

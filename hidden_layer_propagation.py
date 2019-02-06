@@ -61,6 +61,7 @@ def compute_gradients(hyperparameters, parameters, cache, l, debug_mode=False):
             print("Error: unsupported activation function")
             print("\tStack trace: hidden_layer_propagation.nonlinear_backward()")
         return None
+    dZ = cache["dZ"][l]
     # get the number of examples
     m = A_prev.shape[1]
     # get the gradient of W

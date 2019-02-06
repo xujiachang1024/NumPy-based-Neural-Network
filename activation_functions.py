@@ -8,9 +8,9 @@ The sigmoid value in forward propagation
 @return a NumPy array of sigmoid values in forward propagation
 """
 def sigmoid_forward(Z, debug_mode=False):
-    if debug_mode:
-        print("Message: Z.shape = " + str(Z.shape))
-        print("\tStack trace: activation_functions.sigmoid_forward()")
+    # if debug_mode:
+    #     print("Message: Z.shape = " + str(Z.shape))
+    #     print("\tStack trace: activation_functions.sigmoid_forward()")
     sigmoid_forward = 1.0 / (1.0 + np.exp(Z))
     return sigmoid_forward
 
@@ -23,9 +23,9 @@ The sigmoid value in backward propagation
 @return a NumPy array of sigmoid values in backward propagation
 """
 def sigmoid_backward(Z, A, debug_mode=False):
-    if debug_mode:
-        print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
-        print("\tStack trace: activation_functions.sigmoid_backward()")
+    # if debug_mode:
+    #     print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
+    #     print("\tStack trace: activation_functions.sigmoid_backward()")
     sigmoid_backward = np.multiply(A, (1.0 - A))
     return sigmoid_backward
 
@@ -37,9 +37,9 @@ The tanh value in forward propagation
 @return a NumPy array of tanh values in forward propagation
 """
 def tanh_forward(Z, debug_mode=False):
-    if debug_mode:
-        print("Message: Z.shape = " + str(Z.shape))
-        print("\tStack trace: activation_functions.tanh_forward()")
+    # if debug_mode:
+    #     print("Message: Z.shape = " + str(Z.shape))
+    #     print("\tStack trace: activation_functions.tanh_forward()")
     tanh_forward = (np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
     return tanh_forward
 
@@ -52,9 +52,9 @@ The tanh value in backward propagation
 @return a NumPy array of tanh values in backward propagation
 """
 def tanh_backward(Z, A, debug_mode=False):
-    if debug_mode:
-        print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
-        print("\tStack trace: activation_functions.tanh_backward()")
+    # if debug_mode:
+    #     print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
+    #     print("\tStack trace: activation_functions.tanh_backward()")
     tanh_backward = 1.0 - np.square(A)
     return tanh_backward
 
