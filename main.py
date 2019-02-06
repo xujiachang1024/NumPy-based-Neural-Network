@@ -50,10 +50,10 @@ def main(debug_mode=True, cost_plot_mode=True):
         print("Y_train.shape:\t" + str(Y_train.shape))
         print("Y_test.shape:\t" + str(Y_test.shape))
     # set model architecture
-    L = 5
-    dimensions = {0: X_train.shape[0], 1: 10, 2: 9, 3: 8, 4:7, 5:6, 6:Y_train.shape[0]}
-    activations = {1: "tanh", 2: "tanh", 3: "tanh", 4: "tanh", 5: "tanh", 6: "sigmoid"}
+    L = 0
+    dimensions = {0: X_train.shape[0], 1:Y_train.shape[0]}
+    activations = {1: "sigmoid"}
     neural_network = NumPyBasedNeuralNetwork(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
     neural_network.fit(X=X_train, Y=Y_train, batch_size=Y_train.shape[1], debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
 
-main()
+main(debug_mode=True, cost_plot_mode=True)

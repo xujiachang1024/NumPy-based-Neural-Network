@@ -58,7 +58,7 @@ class NumPyBasedNeuralNetwork(object):
 
     def __print_dimensions(self, hyperparameters, parameters=None, cache=None):
         if parameters != None:
-            print("Architecture:")
+            print("Architecture: " + str(hyperparameters["L"]) + " hidden layers")
             print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("W") + "|" + "{:10s}".format("b") + "|" + "{:10s}".format("activation") + "|")
             for l in range(1, hyperparameters["L"] + 2):
                 print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(parameters["W"][l].shape)) + "|" + "{:10s}".format(str(parameters["b"][l].shape)) + "|" +
@@ -69,12 +69,12 @@ class NumPyBasedNeuralNetwork(object):
                                                          "{:10s}".format("dA") + "|" + "{:10s}".format("dZ") + "|" +
                                                          "{:10s}".format("dW") + "|" + "{:10s}".format("db") + "|")
             for l in range(1, hyperparameters["L"] + 2):
-                print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format(str(cache["Z"][l].shape)) + "|" + "{:10s}".format(str(cache["A"][l].shape)) + "|" +
+                print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(cache["Z"][l].shape)) + "|" + "{:10s}".format(str(cache["A"][l].shape)) + "|" +
                                                              "{:10s}".format(str(cache["dA"][l].shape)) + "|" + "{:10s}".format(str(cache["dZ"][l].shape)) + "|" +
                                                              "{:10s}".format(str(cache["dW"][l].shape)) + "|" + "{:10s}".format(str(cache["db"][l].shape)) + "|")
 
 
-    def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.001, batch_size=1, debug_mode=False, cost_plot_mode=True):
+    def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.00001, batch_size=1, debug_mode=False, cost_plot_mode=True):
         # reset model parameters
         self.__reset_parameters(debug_mode=debug_mode)
         # check the number of examples
@@ -129,7 +129,7 @@ class NumPyBasedNeuralNetwork(object):
                 self.__parameters, iterative_cache = e2ep.end_to_end_backward(Y=Y_batch, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=iterative_cache, learning_rate=decayed_learning_rate, debug_mode=debug_mode)
                 if debug_mode:
                     self.__print_dimensions(hyperparameters=self.__hyperparameters, parameters=None, cache=iterative_cache)
-                    input("Press enter to continue...")
+                    # input("Press enter to proceed to next iteration...")
         if cost_plot_mode:
             # plot epoch costs
             plt.plot(self.__costs["epoch"])
