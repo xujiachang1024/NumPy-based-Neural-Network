@@ -69,7 +69,7 @@ def relu_forward(Z, debug_mode=False):
     if debug_mode:
         print("Message: Z.shape = " + str(Z.shape))
         print("\tStack trace: activation_functions.relu_forward()")
-    relu_forward = np.max(0.0, Z)
+    relu_forward = np.max(np.zeros(Z.shape), Z)
     return relu_forward
 
 """
@@ -84,7 +84,7 @@ def relu_backward(Z, A, debug_mode=False):
     if debug_mode:
         print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
         print("\tStack trace: activation_functions.relu_backward()")
-    relu_backward = (Z <= 0) * 0.0 + (Z > 0) * 1.0
+    relu_backward = (Z <= 0) * np.zeros(Z.shape) + (Z > 0) * np.ones(Z.shape)
     return relu_backward
 
 """
@@ -113,5 +113,5 @@ def leaky_relu_backward(Z, A, debug_mode=False):
     if debug_mode:
         print("Message: Z.shape = " + str(Z.shape) + ", A.shape = " + str(A.shape))
         print("\tStack trace: activation_functions.leaky_relu_backward()")
-    leaky_relu_backward = (Z <= 0) * 0.01 + (Z > 0) * 1.0
+    leaky_relu_backward = (Z <= 0) * np.full(Z.shape, 0.01) + (Z > 0) * np.ones(Z.shape)
     return leaky_relu_backward
