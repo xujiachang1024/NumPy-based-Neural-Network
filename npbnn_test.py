@@ -54,6 +54,6 @@ def main(debug_mode=True, cost_plot_mode=True):
     dimensions = {0: X_train.shape[0], 1:Y_train.shape[0]}
     activations = {1: "sigmoid"}
     neural_network = NumPyBasedNeuralNetwork(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
-    neural_network.fit(X=X_train, Y=Y_train, batch_size=Y_train.shape[1], debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
+    neural_network.fit(X=X_train, Y=Y_train, batch_size=25, debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
 
 main(debug_mode=True, cost_plot_mode=True)

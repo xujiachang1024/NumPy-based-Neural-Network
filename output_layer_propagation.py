@@ -14,7 +14,7 @@ def compute_cost(Y, hyperparameters, cache, loss="cross-entropy", debug_mode=Fal
     # get the number of examples
     m = Y.shape[1]
     if loss.lower() == "cross-entropy":
-        loss = - np.multiply(Y, np.log(AL)) - np.multiply((1.0 - Y), (1.0 - AL))
+        loss = - np.multiply(Y, np.log(AL)) - np.multiply((1.0 - Y), np.log(1.0 - AL))
         cost = np.squeeze((1.0 / m) * np.sum(loss))
         return cost
     if debug_mode:
