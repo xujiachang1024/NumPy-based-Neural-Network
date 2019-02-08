@@ -59,19 +59,19 @@ class NumPyBasedNeuralNetwork(object):
     def __print_dimensions(self, hyperparameters, parameters=None, cache=None):
         if parameters != None:
             print("Architecture: " + str(hyperparameters["L"]) + " hidden layers")
-            print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("W") + "|" + "{:10s}".format("b") + "|" + "{:10s}".format("activation") + "|")
+            print("|" + "{:15s}".format("layer") + "|" + "{:15s}".format("W") + "|" + "{:15s}".format("b") + "|" + "{:15s}".format("activation") + "|")
             for l in range(1, hyperparameters["L"] + 2):
-                print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(parameters["W"][l].shape)) + "|" + "{:10s}".format(str(parameters["b"][l].shape)) + "|" +
-                                                            "{:10s}".format(str(hyperparameters["activations"][l])) + "|")
+                print("|" + "{:15s}".format(str(l)) + "|" + "{:15s}".format(str(parameters["W"][l].shape)) + "|" + "{:15s}".format(str(parameters["b"][l].shape)) + "|" +
+                                                            "{:15s}".format(str(hyperparameters["activations"][l])) + "|")
         if cache != None:
             print("Propagation:")
-            print("|" + "{:10s}".format("layer") + "|" + "{:10s}".format("Z") + "|" + "{:10s}".format("A") + "|" +
-                                                         "{:10s}".format("dA") + "|" + "{:10s}".format("dZ") + "|" +
-                                                         "{:10s}".format("dW") + "|" + "{:10s}".format("db") + "|")
+            print("|" + "{:15s}".format("layer") + "|" + "{:15s}".format("Z") + "|" + "{:15s}".format("A") + "|" +
+                                                         "{:15s}".format("dA") + "|" + "{:15s}".format("dZ") + "|" +
+                                                         "{:15s}".format("dW") + "|" + "{:15s}".format("db") + "|")
             for l in range(1, hyperparameters["L"] + 2):
-                print("|" + "{:10s}".format(str(l)) + "|" + "{:10s}".format(str(cache["Z"][l].shape)) + "|" + "{:10s}".format(str(cache["A"][l].shape)) + "|" +
-                                                             "{:10s}".format(str(cache["dA"][l].shape)) + "|" + "{:10s}".format(str(cache["dZ"][l].shape)) + "|" +
-                                                             "{:10s}".format(str(cache["dW"][l].shape)) + "|" + "{:10s}".format(str(cache["db"][l].shape)) + "|")
+                print("|" + "{:15s}".format(str(l)) + "|" + "{:15s}".format(str(cache["Z"][l].shape)) + "|" + "{:15s}".format(str(cache["A"][l].shape)) + "|" +
+                                                             "{:15s}".format(str(cache["dA"][l].shape)) + "|" + "{:15s}".format(str(cache["dZ"][l].shape)) + "|" +
+                                                             "{:15s}".format(str(cache["dW"][l].shape)) + "|" + "{:15s}".format(str(cache["db"][l].shape)) + "|")
 
 
     def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.00001, batch_size=1, debug_mode=False, cost_plot_mode=True):
@@ -152,11 +152,8 @@ class NumPyBasedNeuralNetwork(object):
                 print("Error: inconsistent number of features")
                 print("\tStack trace: NumPyBasedNeuralNetwork.fit()")
             return None
-        predicted_cache = e2ep.initialize(debug_mode=debug_mode)
+        predicted_cache = e2ep.initialize_cache(debug_mode=debug_mode)
         self.__parameters, predicted_cache = e2ep.end_to_end_forward(X=X, hyperparameters=self.__hyperparameters, parameters=self.__parameters, cache=predicted_cache, debug_mode=debug_mode)
         AL = predicted_cache["A"][self.__hyperparameters["L"] + 1]
-        predicted_classes = np.argmax(AL, axis=0)
-        predicted_onehots = np.zeros(AL.shape)
-        for col in range(A.shape[1]):
-            predicted_onehots[predicted_classes[col], col] = 1
-        return (predicted_classes, predicted_onehots)
+        Y_predicted = np.argmax(AL, axis=0)
+        return Y_predicted

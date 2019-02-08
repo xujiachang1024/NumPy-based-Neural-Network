@@ -30,7 +30,7 @@ def convert_labels_to_onehot(Y_origin):
     return Y_onehot
 
 def convert_onehot_to_labels(Y_onehot):
-    Y_origin = np.argmax(Y_onehot, axis=0)
+    Y_origin = np.argmax(Y_onehot, axis=0).reshape((1, Y_onehot.shape[1]))
     return Y_origin
 
 def main(debug_mode=True, cost_plot_mode=True):
@@ -50,10 +50,14 @@ def main(debug_mode=True, cost_plot_mode=True):
         print("Y_train.shape:\t" + str(Y_train.shape))
         print("Y_test.shape:\t" + str(Y_test.shape))
     # set model architecture
-    L = 0
-    dimensions = {0: X_train.shape[0], 1:Y_train.shape[0]}
-    activations = {1: "sigmoid"}
+    L = 2
+    dimensions = {0: X_train.shape[0], 1: 10, 2: 5, 3:Y_train.shape[0]}
+    activations = {1: "tanh", 2: "tanh", 3: "sigmoid"}
     neural_network = NumPyBasedNeuralNetwork(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
-    neural_network.fit(X=X_train, Y=Y_train, batch_size=25, debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
+    neural_network.fit(X=X_train, Y=Y_train, batch_size=Y_train.shape[1], debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
+    Y_predicted = neural_network.predict(X=X_test, debug_mode=debug_mode)
+    Y_test_reg = convert_onehot_to_labels(Y_test)
+    F1_score = f1_score(Y_test_reg.T, Y_predicted.T, average="weighted")
+    print("Test set F1 score = " + str(F1_score))
 
 main(debug_mode=True, cost_plot_mode=True)
