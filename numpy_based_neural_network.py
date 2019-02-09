@@ -74,7 +74,7 @@ class NumPyBasedNeuralNetwork(object):
                                                              "{:15s}".format(str(cache["dW"][l].shape)) + "|" + "{:15s}".format(str(cache["db"][l].shape)) + "|")
 
 
-    def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.00001, batch_size=1, debug_mode=False, cost_plot_mode=True):
+    def fit(self, X, Y, learning_rate=0.001, decay_rate=0.1, early_stopping_point=1000, convergence_tolerance=0.00001, batch_size=1, debug_mode=False, cost_plot_mode=False):
         # reset model parameters
         self.__reset_parameters(debug_mode=debug_mode)
         # check the number of examples
