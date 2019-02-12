@@ -16,8 +16,8 @@ def read_from_file(filename):
             row = np.array(row)
             rows.append(row)
     data = np.array(rows)
-    X_origin = data[:, 0: -1]
-    Y_origin = data[:, -1: data.shape[1]]
+    X_origin = data[0:8, 0: -1]
+    Y_origin = data[0:8, -1: data.shape[1]]
     return data, X_origin, Y_origin
 
 def convert_labels_to_onehot(Y_origin):
