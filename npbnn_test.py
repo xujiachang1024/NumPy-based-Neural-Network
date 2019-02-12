@@ -16,8 +16,8 @@ def read_from_file(filename):
             row = np.array(row)
             rows.append(row)
     data = np.array(rows)
-    X_origin = data[0:8, 0: -1]
-    Y_origin = data[0:8, -1: data.shape[1]]
+    X_origin = data[:, 0: -1]
+    Y_origin = data[:, -1: data.shape[1]]
     return data, X_origin, Y_origin
 
 def convert_labels_to_onehot(Y_origin):
@@ -54,7 +54,7 @@ def main(debug_mode=True, cost_plot_mode=True):
     dimensions = {0: X_train.shape[0], 1: 10, 2: 5, 3:Y_train.shape[0]}
     activations = {1: "tanh", 2: "tanh", 3: "sigmoid"}
     neural_network = NumPyBasedNeuralNetwork(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
-    neural_network.fit(X=X_train, Y=Y_train, batch_size=Y_train.shape[1], debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
+    neural_network.fit(X=X_train, Y=Y_train, batch_size=50, debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
     Y_predicted = neural_network.predict(X=X_test, debug_mode=debug_mode)
     Y_test_reg = convert_onehot_to_labels(Y_test)
     F1_score = f1_score(Y_test_reg.T, Y_predicted.T, average="weighted")
