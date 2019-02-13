@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 class NumPyBasedNeuralNetwork(object):
 
-    def __init__(self, L=None, dimensions=None, activations=None, regularization=None, debug_mode=False):
+    def __init__(self, L=None, dimensions=None, activations=None, debug_mode=False):
         # declare hyperparameters
         self.__hyperparameters = None
         # declare parameters
@@ -18,13 +18,12 @@ class NumPyBasedNeuralNetwork(object):
         # set model architecture
         self.set_architecture(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
 
-    def set_architecture(self, L=None, dimensions=None, activations=None, regularization=None, debug_mode=False):
+    def set_architecture(self, L=None, dimensions=None, activations=None, debug_mode=False):
         # initialize hyperparameters
         self.__hyperparameters = dict()
         self.__hyperparameters["L"] = L # number of hidden layers
         self.__hyperparameters["dimensions"] = dimensions # number of neurons at each layer
         self.__hyperparameters["activations"] = activations # type of activation function at each layer
-        self.__hyperparameters["regularization"] = regularization # regularization specification
         # initialize parameters
         self.__parameters = dict()
         self.__parameters["W"] = dict() # weights
