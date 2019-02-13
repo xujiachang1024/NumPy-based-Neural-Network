@@ -38,8 +38,8 @@ class NumPyBasedNeuralNetwork(object):
                 for l in range(1, self.__hyperparameters["L"] + 2):
                     n_h_curr = self.__hyperparameters["dimensions"][l]
                     n_h_prev = self.__hyperparameters["dimensions"][l - 1]
-                    self.__parameters["W"][l] = np.random.randn(n_h_curr, n_h_prev)
-                    self.__parameters["b"][l] = np.random.randn(n_h_curr, 1)
+                    self.__parameters["W"][l] = np.random.randn(n_h_curr, n_h_prev) * np.sqrt(2.0 / n_h_prev)
+                    self.__parameters["b"][l] = np.zeros((n_h_curr, 1))
             else:
                 if debug_mode:
                     print("Error: inconsistent number of hidden layers")
