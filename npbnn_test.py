@@ -5,7 +5,7 @@ from sklearn.metrics import f1_score
 import warnings
 warnings.filterwarnings("ignore")
 
-def read_from_file(filename):
+def read_from_file(filename="good-moves.txt"):
     rows = []
     with open(filename, "r") as file:
         for line in file:
@@ -16,7 +16,7 @@ def read_from_file(filename):
             row = np.array(row)
             rows.append(row)
     data = np.array(rows)
-    X_origin = data[:, 0: -1]
+    X_origin = data[:, 0: 7]
     Y_origin = data[:, -1: data.shape[1]]
     return data, X_origin, Y_origin
 
@@ -35,7 +35,7 @@ def convert_onehot_to_labels(Y_onehot):
 
 def main(debug_mode=True, cost_plot_mode=True):
     # read data from file
-    data, X_origin, Y_origin = read_from_file("good-moves.txt")
+    data, X_origin, Y_origin = read_from_file(filename="good-moves.txt")
     Y_onehot = convert_labels_to_onehot(Y_origin)
     if debug_mode:
         print("data.shape:\t" + str(data.shape))
@@ -50,14 +50,18 @@ def main(debug_mode=True, cost_plot_mode=True):
         print("Y_train.shape:\t" + str(Y_train.shape))
         print("Y_test.shape:\t" + str(Y_test.shape))
     # set model architecture
-    L = 2
-    dimensions = {0: X_train.shape[0], 1: 10, 2: 5, 3:Y_train.shape[0]}
-    activations = {1: "tanh", 2: "tanh", 3: "sigmoid"}
+    L = 1
+    dimensions = {0: X_train.shape[0], 1: 10, 2:Y_train.shape[0]}
+    activations = {1: "tanh", 2: "sigmoid"}
     neural_network = NumPyBasedNeuralNetwork(L=L, dimensions=dimensions, activations=activations, debug_mode=debug_mode)
-    neural_network.fit(X=X_train, Y=Y_train, batch_size=50, debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
+    neural_network.fit(X=X_train, Y=Y_train, learning_rate=0.001, decay_rate=0.05, early_stopping_point=10000, convergence_tolerance=0.0000001, batch_size=50, debug_mode=debug_mode, cost_plot_mode=cost_plot_mode)
     Y_predicted = neural_network.predict(X=X_test, debug_mode=debug_mode)
     Y_test_reg = convert_onehot_to_labels(Y_test)
     F1_score = f1_score(Y_test_reg.T, Y_predicted.T, average="weighted")
     print("Test set F1 score = " + str(F1_score))
+    return F1_score
 
-main(debug_mode=True, cost_plot_mode=True)
+list = []
+for i in range(100):
+    list.append(main(debug_mode=False, cost_plot_mode=False))
+print(sum(list) / len(list))
